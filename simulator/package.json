@@ -1,0 +1,19 @@
+{
+  "name": "interstellar-link-budget-simulator",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Link budget simulator for an Arecibo-sized dish receiving a signal from a nearby star (Project Hail Mary validation)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "vite": "^6.3.0",
+    "vitest": "^3.1.0"
+  }
+}

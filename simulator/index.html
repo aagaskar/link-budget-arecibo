@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>" />
+    <title>Interstellar Link Budget — Arecibo vs. Project Hail Mary</title>
+  </head>
+  <body>
+    <div class="layout">
+      <header class="app-header">
+        <h1>Interstellar link budget simulator</h1>
+        <span class="subtitle">an Arecibo-sized dish listening to a transmitter at a nearby star — could <em>Project Hail Mary</em> have phoned home?</span>
+        <span class="spacer"></span>
+        <button class="theme-toggle" id="theme-toggle" type="button">theme</button>
+      </header>
+
+      <section class="hero-strip" id="hero" aria-label="Link performance summary"></section>
+
+      <section class="card geometry-card" aria-label="Link geometry">
+        <h2>Relative geometry <span class="h2-note">— circled regions magnified below</span></h2>
+        <svg id="geometry"></svg>
+        <p class="geo-note">
+          Schematic bodies, dish size and cone angles are exaggerated for visibility — every printed
+          number is computed from the current settings. The right inset is drawn to scale in AU: the
+          shaded disk is the half-power footprint, the faint outer ring the first null.
+        </p>
+      </section>
+
+      <div class="grid-main">
+        <section class="card" aria-label="Link parameters">
+          <h2>Link parameters</h2>
+          <div id="controls"></div>
+        </section>
+
+        <section class="card" aria-label="Pointing error analysis">
+          <h2>What pointing error does to the link</h2>
+          <div class="chart-legend" id="chart-legend">
+            <span class="key"><span class="swatch"></span>exact aperture pattern (Airy)</span>
+            <span class="key"><span class="swatch dashed"></span>12·(θ/θ₃dB)² approximation</span>
+          </div>
+          <div class="chart-wrap" id="chart-wrap">
+            <svg id="chart"></svg>
+          </div>
+          <div id="point-table"></div>
+        </section>
+      </div>
+
+      <div class="grid-analysis">
+        <section class="card" aria-label="Link budget ledger">
+          <h2>Link budget ledger</h2>
+          <div id="ledger"></div>
+        </section>
+
+        <section class="card notes" aria-label="Model notes">
+          <h2>Model notes &amp; assumptions</h2>
+        <ul>
+          <li>
+            <strong>Physics follows the Python notebook</strong> in <code>notebook/</code>: Shannon capacity in the
+            power-limited limit, C = (P/N₀)/ln 2, with free-space path loss and k·T receiver noise. The
+            “Notebook baseline” preset reproduces its result (~1.1 kbps for Arecibo ↔ Arecibo over 10 ly at 450 kW).
+          </li>
+          <li>
+            <strong>Antenna pattern:</strong> uniformly illuminated circular aperture (Airy pattern),
+            G(θ)/G₀ = [2·J₁(x)/x]², x = (πD/λ)·sin θ — exact main lobe, optimistic sidelobes, floored at −60 dB.
+            Real tapered feeds have a slightly wider main lobe and lower sidelobes.
+          </li>
+          <li>
+            <strong>Host-star noise</strong> is modeled with Planck’s law exactly as in the notebook and shown in the
+            ledger — it lands ~70+ dB below receiver thermal noise, i.e. negligible, which the notebook proves at length.
+          </li>
+          <li>
+            <strong>Aim-ahead:</strong> stars move. The transmitter must point where the Sun will be one light-travel-time
+            from now: an offset of μ·(R/c). For Tau Ceti (μ ≈ 1.9″/yr, 11.9 ly) that is ~23″ — a quarter of the
+            305 m dish’s beamwidth — so “point at the star you see” is already a pointing error.
+          </li>
+          <li>
+            <strong>Not modeled:</strong> interstellar scintillation and dispersion, atmospheric effects, polarization
+            mismatch, modem implementation loss (Shannon capacity is an upper bound no real coder reaches), and the
+            transmitter’s ability to know where Earth is to sub-beamwidth accuracy in the first place.
+          </li>
+          <li>
+            <strong>The book’s answer:</strong> the notebook concludes a meaningful radio link home was “not quite
+            possible” — capacity scales with D², and nobody packs a 305 m dish on a ship. The novel agrees: the
+            <em>Hail Mary</em> sends its science home as physical storage on the beetle probes. Crank the transmit dish
+            below ~30 m here and watch the verdict chip agree.
+          </li>
+        </ul>
+        </section>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
