@@ -80,8 +80,15 @@ toggle).
 ### Deploying
 
 `npm run build` produces a fully static site in `dist/` — no server process,
-no port. Assets use relative URLs (`base: './'` in `vite.config.ts`), so the
-build works from the domain root or mounted under any subpath, e.g. nginx:
+no port. The base path comes from `VITE_BASE` (default: relative URLs, which
+work from any mount point). `deploy.sh` builds and publishes it:
+
+```bash
+./deploy.sh   # npm ci → VITE_BASE=/link-budget/ npm run build
+              # → rsync dist/ to /var/www/link-budget/dist/ → restorecon
+```
+
+with the matching nginx block:
 
 ```nginx
 location /link-budget/ {
