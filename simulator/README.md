@@ -77,6 +77,20 @@ No runtime dependencies — plain TypeScript, hand-rolled SVG, and CSS custom
 properties (light and dark themes, `prefers-color-scheme` plus a manual
 toggle).
 
+### Deploying
+
+`npm run build` produces a fully static site in `dist/` — no server process,
+no port. Assets use relative URLs (`base: './'` in `vite.config.ts`), so the
+build works from the domain root or mounted under any subpath, e.g. nginx:
+
+```nginx
+location /link-budget/ {
+    alias /var/www/link-budget/dist/;
+    index index.html;
+    try_files $uri $uri/ =404;
+}
+```
+
 ## Honest limitations
 
 Not modeled: interstellar scintillation/dispersion, atmosphere, polarization,
